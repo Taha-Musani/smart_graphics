@@ -10,8 +10,8 @@ const OAuth2Strategy = require("passport-google-oauth2").Strategy;
 const cookieParser = require("cookie-parser");
 const userdb = require("./model/userSchema");
 
-const clientID=process.env.CLIENT_ID
-const clientSecret=process.env.CLIENT_SECRET
+const clientID = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 
 app.use(cookieParser());
 app.use(
@@ -39,8 +39,7 @@ app.use(passport.session());
 passport.use(
   new OAuth2Strategy(
     {
-      clientID:
-        clientID,
+      clientID: clientID,
       clientSecret: clientSecret,
       callbackURL: process.env.REDIRECT_URL,
       scope: [
@@ -112,16 +111,14 @@ app.get("/login/sucess", async (req, res) => {
   if (req.user) {
     res.cookie("accessToken", req.user.accessToken, {
       httpOnly: true, // Helps mitigate XSS
-      secure: "production", // Use secure cookies in production
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
       maxAge: 60 * 60 * 1000, // 1 hour (adjust as needed)
+      sameSite: "None",
     });
 
     const accessToken = req.user.accessToken;
     const { OAuth2 } = google.auth;
-    const oAuth2Client = new OAuth2(
-      clientID,
-      clientSecret
-    );
+    const oAuth2Client = new OAuth2(clientID, clientSecret);
     oAuth2Client.setCredentials({ access_token: accessToken });
     // console.log(accessToken);
 
@@ -160,10 +157,7 @@ app.post("/append-spreadsheet", async (req, res) => {
     // console.log(req.cookies.accessToken);
 
     const { OAuth2 } = google.auth;
-    const oAuth2Client = new OAuth2(
-      clientID,
-      clientSecret
-    );
+    const oAuth2Client = new OAuth2(clientID, clientSecret);
     oAuth2Client.setCredentials({ access_token: accessToken });
 
     if (!advfileName || !Data) {
@@ -216,18 +210,14 @@ app.post("/append-spreadsheet", async (req, res) => {
       },
     });
 
-    res
-      .status(200)
-      .json({
-        message: `Data appended successfully to spreadsheet "${advfileName}"`,
-      })
+    res.status(200).json({
+      message: `Data appended successfully to spreadsheet "${advfileName}"`,
+    });
   } catch (error) {
     // console.error("Error appending to spreadsheet:", error);
-    res
-      .status(500)
-      .json({
-        message: `An error occurred while appending data to the spreadsheet`,
-      })
+    res.status(500).json({
+      message: `An error occurred while appending data to the spreadsheet`,
+    });
   }
 });
 
@@ -239,10 +229,7 @@ app.post("/create-spreadsheet/:fileName", async (req, res) => {
     // console.log(accessToken);
 
     const { OAuth2 } = google.auth;
-    const oAuth2Client = new OAuth2(
-      clientID,
-      clientSecret
-    );
+    const oAuth2Client = new OAuth2(clientID, clientSecret);
     oAuth2Client.setCredentials({ access_token: accessToken });
 
     if (!fileName) {
@@ -331,4 +318,3 @@ app.post("/create-spreadsheet/:fileName", async (req, res) => {
 app.listen(process.env.PORT, () => {
   console.log(`server start at port no ${process.env.PORT}`);
 });
-
