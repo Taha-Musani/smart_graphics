@@ -1,0 +1,111 @@
+/* styles.css */
+  .addadv {
+    margin: 0 auto;
+    border: 2px solid #000;
+    width: 50%;
+    padding: 32px;
+    margin-top: 1.5rem;
+  }
+  .form-container {
+    margin: 0 auto;
+    margin-top: 24px;
+    background-color:rgb(108, 108, 235); /* Dark grey form background */
+    color: #fff;
+    padding: 42px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2); /* Subtle white shadow */
+    width: 350px;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #fff;
+  }
+  
+  label {
+    display: block;
+    /* margin-bottom: 10px; */
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    background-color: #fdfdfd; /* Darker grey input background */
+    border: 1px solid #444; /* Dark border */
+    color: #333; /* White text inside input */
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  input::placeholder {
+    color: #888; /* Lighter placeholder text */
+  }
+  
+  select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"%3E%3Cpath fill="white" d="M7 10l5 5 5-5z"/%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-color: #fdfdfd; /* Darker grey input background */
+  }
+  
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #fff; /* White button background */
+    color: #000; /* Black button text */
+    border: 2px solid #fff; /* White border */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #000; /* Invert to black background */
+    color: #fff; /* White text */
+    border: 2px solid #fff; /* White border */
+  }
+  
+  input:focus,
+  select:focus,
+  button:focus {
+    /* outline: none; */
+    border-color: #fff; /* White border on focus */
+  }
+
+  .loader_container{
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #333;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
