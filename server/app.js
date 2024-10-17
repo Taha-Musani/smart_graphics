@@ -70,6 +70,7 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        
         let user = await userdb.findOne({ googleId: profile.id });
 
         if (user) {
@@ -132,7 +133,8 @@ app.get("/login/sucess", async (req, res) => {
   if (req.user) {
     res.cookie("accessToken", req.user.accessToken, {
       httpOnly: true, // Helps mitigate XSS
-      secure:"production", // Use secure cookies in production
+      secure:true, // Use secure cookies in production
+      sameSite:"none",
       maxAge: 60 * 60 * 1000, // 1 hour (adjust as needed)
     });
 
