@@ -4,6 +4,8 @@ const app = express();
 const cors = require("cors");
 require("./db/conn");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const mongoose = require("mongoose");
 const passport = require("passport");
 const { google } = require("googleapis");
 const OAuth2Strategy = require("passport-google-oauth2").Strategy;
@@ -24,6 +26,7 @@ app.use(
 app.use(express.json());
 
 // setup session
+
 app.use(
   session({
     secret: "YOUR SECRET KEY",
@@ -31,6 +34,22 @@ app.use(
     saveUninitialized: true,
   })
 );
+// app.use(session({
+//   secret: process.env.SESSION_SECRET, // Use a secure random string
+//   resave: false,
+//   saveUninitialized: false,
+//   store: MongoStore.create({
+//     mongoUrl: process.env.DATABASE_URL, // Your MongoDB connection string
+//     collectionName: 'sessions', // Optional: specify the collection name
+//   }),
+//   cookie: {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+//     sameSite: 'None', // Adjust as needed
+//     maxAge: 60 * 60 * 1000, // 1 hour
+//   },
+// }));
+
 
 // setuppassport
 app.use(passport.initialize());
@@ -108,12 +127,13 @@ app.get(
 );
 
 app.get("/login/sucess", async (req, res) => {
+  console.log(req.user);
+  
   if (req.user) {
     res.cookie("accessToken", req.user.accessToken, {
       httpOnly: true, // Helps mitigate XSS
-      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      secure:"production", // Use secure cookies in production
       maxAge: 60 * 60 * 1000, // 1 hour (adjust as needed)
-      sameSite: "None",
     });
 
     const accessToken = req.user.accessToken;
@@ -154,7 +174,8 @@ app.post("/append-spreadsheet", async (req, res) => {
     const { advfileName, Data } = req.body;
     const accessToken = req.cookies.accessToken;
 
-    // console.log(req.cookies.accessToken);
+    console.log(req.cookies);
+    console.log(req.cookies.accessToken);
 
     const { OAuth2 } = google.auth;
     const oAuth2Client = new OAuth2(clientID, clientSecret);
